@@ -48,15 +48,18 @@ function App() {
       <p>
         <button onClick={processInput}>Create Output</button>
       </p>
-
-      <p>Post this back to smartsheet at /sheets/sheetId/rows/move</p>
-      <textarea
-        value={output}
-        className="report_result_box"
-        onClick={copyOutput}
-        id="postman-response"
-        ref={outputRef}
-      />
+      {output && (
+        <div>
+          <p>Post this back to smartsheet at /sheets/sheetId/rows/move</p>
+          <textarea
+            value={output}
+            className="report_result_box"
+            onClick={copyOutput}
+            id="postman-response"
+            ref={outputRef}
+          />
+        </div>
+      )}
     </div>
   );
 }
