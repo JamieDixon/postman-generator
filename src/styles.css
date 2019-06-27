@@ -1,0 +1,14 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+  color: #6c7a89;
+}
+
+.report_result_box {
+  width: 80%;
+  height: 10em;
+}
+
+label {
+  margin-right: 1em;
+}
