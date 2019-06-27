@@ -4,9 +4,36 @@
   color: #6c7a89;
 }
 
-.report_result_box {
+.output {
+  position: relative;
   width: 80%;
-  height: 10em;
+  margin: 0 auto;
+}
+
+.notice {
+  opacity: 0;
+  position: absolute;
+  bottom: 0em;
+  right: 0;
+  border: 1px solid red;
+  background: #e26a6a;
+  color: #ffffff;
+  padding: 1em;
+  transition: all 0.5s;
+}
+
+.notice.active {
+  opacity: 1;
+  bottom: -2.3em;
+}
+
+.report_result_box {
+  width: 100%;
+}
+
+textarea {
+  width: 80%;
+  height: 20em;
 }
 
 label {

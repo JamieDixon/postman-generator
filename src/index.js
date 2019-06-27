@@ -8,6 +8,7 @@ function App() {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [sheetId, setSheetId] = useState("");
+  const [copied, setCopied] = useState(true);
   const outputRef = useRef(null);
 
   const processInput = () => {
@@ -27,6 +28,9 @@ function App() {
   const copyOutput = () => {
     outputRef.current.select();
     document.execCommand("copy");
+    setCopied(true);
+
+    setTimeout(() => setCopied(false), 3000);
   };
 
   return (
@@ -41,7 +45,6 @@ function App() {
       />
       <p>Run a report in postman and copy the response to this box:</p>
       <textarea
-        className="report_result_box"
         id="postman-response"
         value={input}
         onChange={e => setInput(e.target.value)}
@@ -50,8 +53,8 @@ function App() {
       <p>
         <button onClick={processInput}>Create Output</button>
       </p>
-      {output && (
-        <div>
+      {true && (
+        <div className="output">
           <p>Post this back to smartsheet at /sheets/sheetId/rows/move</p>
           <textarea
             value={output}
@@ -60,6 +63,13 @@ function App() {
             id="postman-response"
             ref={outputRef}
           />
+          <p className={"notice" + (copied ? " active" : "")}>
+            Copied to clipboard
+          </p>
+          <p>
+            Click inside the textarea to automatically copy the result to your
+            clipboard
+          </p>
         </div>
       )}
     </div>
