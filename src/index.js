@@ -6,7 +6,7 @@ import "./styles.css";
 
 function App() {
   const [input, setInput] = useState("");
-  const [output, setOutput] = useState('{"rowIds":[],"to":{"sheetId":""}}');
+  const [output, setOutput] = useState({ rowIds: [], to: { sheetId: "" } });
   const [sheetId, setSheetId] = useState("");
   const [copied, setCopied] = useState(false);
   const outputRef = useRef(null);
@@ -24,7 +24,7 @@ function App() {
       }
     };
 
-    setOutput(JSON.stringify(result));
+    setOutput(result);
   };
 
   const copyOutput = () => {
@@ -53,7 +53,7 @@ function App() {
       <div className="output">
         <p>Post this back to smartsheet at /sheets/sheetId/rows/move</p>
         <textarea
-          value={output}
+          value={JSON.stringify(output)}
           className="report_result_box"
           onClick={copyOutput}
           onChange={e => setOutput(e.target.value)}
@@ -67,6 +67,12 @@ function App() {
           Click inside the textarea to automatically copy the result to your
           clipboard
         </p>
+        {output.rowIds.length > 0 && sheetId && (
+          <p>
+            This operation will move <strong>{output.rowIds.length}</strong>{" "}
+            rows to <strong>{sheetId}</strong>
+          </p>
+        )}
       </div>
     </div>
   );
