@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import ReactDOM from "react-dom";
+import { propOr } from "ramda";
 
 import "./styles.css";
 
@@ -10,7 +11,8 @@ function App() {
   const outputRef = useRef(null);
 
   const processInput = () => {
-    const rowIds = JSON.parse(input).rows.map(x => x.id);
+    const getRows = propOr([], "rows");
+    const rowIds = getRows(JSON.parse(input)).map(x => x.id);
 
     const result = {
       rowIds,
