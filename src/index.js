@@ -6,14 +6,16 @@ import "./styles.css";
 
 function App() {
   const [input, setInput] = useState("");
-  const [output, setOutput] = useState("");
+  const [output, setOutput] = useState('{"rowIds":[],"to":{"sheetId":""}}');
   const [sheetId, setSheetId] = useState("");
-  const [copied, setCopied] = useState(true);
+  const [copied, setCopied] = useState(false);
   const outputRef = useRef(null);
 
-  const processInput = () => {
+  const processInput = (sheetId, input) => {
+    setInput(input);
+    setSheetId(sheetId);
     const getRows = propOr([], "rows");
-    const rowIds = getRows(JSON.parse(input)).map(x => x.id);
+    const rowIds = getRows(input ? JSON.parse(input) : "").map(x => x.id);
 
     const result = {
       rowIds,
@@ -29,7 +31,6 @@ function App() {
     outputRef.current.select();
     document.execCommand("copy");
     setCopied(true);
-
     setTimeout(() => setCopied(false), 3000);
   };
 
@@ -40,38 +41,33 @@ function App() {
       <input
         id="sheet-id"
         value={sheetId}
-        onChange={e => setSheetId(e.target.value)}
+        onChange={e => processInput(e.target.value, input)}
         type="text"
       />
       <p>Run a report in postman and copy the response to this box:</p>
       <textarea
         id="postman-response"
         value={input}
-        onChange={e => setInput(e.target.value)}
+        onChange={e => processInput(sheetId, e.target.value)}
       />
-
-      <p>
-        <button onClick={processInput}>Create Output</button>
-      </p>
-      {true && (
-        <div className="output">
-          <p>Post this back to smartsheet at /sheets/sheetId/rows/move</p>
-          <textarea
-            value={output}
-            className="report_result_box"
-            onClick={copyOutput}
-            id="postman-response"
-            ref={outputRef}
-          />
-          <p className={"notice" + (copied ? " active" : "")}>
-            Copied to clipboard
-          </p>
-          <p>
-            Click inside the textarea to automatically copy the result to your
-            clipboard
-          </p>
-        </div>
-      )}
+      <div className="output">
+        <p>Post this back to smartsheet at /sheets/sheetId/rows/move</p>
+        <textarea
+          value={output}
+          className="report_result_box"
+          onClick={copyOutput}
+          onChange={e => setOutput(e.target.value)}
+          id="postman-response"
+          ref={outputRef}
+        />
+        <p className={"notice" + (copied ? " active" : "")}>
+          Copied to clipboard
+        </p>
+        <p>
+          Click inside the textarea to automatically copy the result to your
+          clipboard
+        </p>
+      </div>
     </div>
   );
 }
